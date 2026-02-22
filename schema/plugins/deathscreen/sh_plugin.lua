@@ -12,6 +12,8 @@ if SERVER then
     util.AddNetworkString("ixDeathscreen")
 
     function PLUGIN:PlayerDeath(victim)
+        if not IsValid(victim) then return end
+
         net.Start("ixDeathscreen")
         net.WriteString("raid")
         net.Send(victim)

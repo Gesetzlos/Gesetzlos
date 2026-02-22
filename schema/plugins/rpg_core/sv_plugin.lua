@@ -45,18 +45,3 @@ function PLUGIN:PlayerLoadedCharacter(client, character)
     data.lastJoin = os.time()
     character:SetPlayerData(data)
 end
-
-
-function PLUGIN:CanPlayerCreateCharacter(client, payload)
-    local maxCharacters = ix.config.Get("maxCharacters", 3)
-    local own = 0
-    for _, character in pairs(ix.char.loaded or {}) do
-        if character and character:GetPlayer() == client then
-            own = own + 1
-        end
-    end
-
-    if own >= maxCharacters then
-        return false, "Du hast die maximale Charakteranzahl erreicht."
-    end
-end

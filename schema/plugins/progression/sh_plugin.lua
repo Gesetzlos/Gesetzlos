@@ -25,7 +25,7 @@ function PLUGIN:AddXP(character, amount)
         xp = xp - self:GetXPRequired(level)
         level = level + 1
 
-        local data = character:GetPlayerData()
+        local data = character:GetPlayerData() or {}
         data.statPoints = (data.statPoints or 0) + ix.config.Get("statPointPerLevel", 1)
         data.talentPoints = (data.talentPoints or 0) + ix.config.Get("talentPointPerLevel", 1)
         character:SetPlayerData(data)
