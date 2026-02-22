@@ -1,11 +1,11 @@
-SCHEMA.name = "Gesetzlos"
-SCHEMA.author = "Codex"
-SCHEMA.description = "Modulares mittelalterliches RP-MMO Framework auf Helix-Basis."
+Schema.name = "Gesetzlos"
+Schema.author = "Codex"
+Schema.description = "Modulares mittelalterliches RP-MMO Framework auf Helix-Basis."
 
 ix.util.Include("sh_config.lua")
 
 -- Hilfsfunktion für Gold/Silver/Copper Darstellung
-function SCHEMA:FormatCurrency(copper)
+function Schema:FormatCurrency(copper)
     copper = math.max(math.floor(tonumber(copper) or 0), 0)
 
     local gold = math.floor(copper / 10000)
