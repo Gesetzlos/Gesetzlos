@@ -1,7 +1,28 @@
 local PLUGIN = PLUGIN
 
+local function RunDBQuery(query, callback)
+    if ix and ix.db and isfunction(ix.db.Query) then
+        return ix.db.Query(query, callback)
+    end
+
+    if not sql then
+        if callback then
+            callback(nil)
+        end
+        return nil
+    end
+
+    local data = sql.Query(query)
+
+    if callback then
+        callback(data)
+    end
+
+    return data
+end
+
 function PLUGIN:InitializedSchema()
-    ix.db.Query([[
+    RunDBQuery([[
         CREATE TABLE IF NOT EXISTS ix_gesetzlos_worlddata (
             key TEXT PRIMARY KEY,
             value TEXT NOT NULL,
@@ -14,16 +35,16 @@ function PLUGIN:SetWorldData(key, value)
     local payload = util.TableToJSON(value or {})
     local now = os.time()
 
-    ix.db.Query(string.format(
+    RunDBQuery(string.format(
         "REPLACE INTO ix_gesetzlos_worlddata (key, value, updated_at) VALUES (%s, %s, %d)",
-        ix.db.Escape(key),
-        ix.db.Escape(payload),
+        SQLStr(key),
+        SQLStr(payload),
         now
     ))
 end
 
 function PLUGIN:GetWorldData(key, callback)
-    ix.db.Query(string.format("SELECT value FROM ix_gesetzlos_worlddata WHERE key = %s", ix.db.Escape(key)), function(data)
+    RunDBQuery(string.format("SELECT value FROM ix_gesetzlos_worlddata WHERE key = %s", SQLStr(key)), function(data)
         if not callback then return end
 
         if data and data[1] and data[1].value then
